@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Egyptian Salary Calculator</title>
+    <title>Egyptian Income Tax Calculator</title>
     
     <!-- PWA Meta Tags -->
     <meta name="description" content="Calculate your net salary with Egyptian tax rates and social insurance">
     <meta name="theme-color" content="#667eea">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="EGY Salary Calc">
+    <meta name="apple-mobile-web-app-title" content="EGY Tax Calc">
     <meta name="msapplication-TileColor" content="#667eea">
     <meta name="msapplication-config" content="browserconfig.xml">
     
@@ -18,12 +18,12 @@
     <link rel="manifest" href="manifest.json">
     
     <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
-    <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+    <link rel="icon" href="icons/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,6 +62,15 @@
           font-size: 2.5em;
           margin-bottom: 10px;
           font-weight: 700;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+      }
+
+      .header h1 img {
+          width: 40px;
+          height: 40px;
       }
 
       .header p {
@@ -74,6 +83,14 @@
           grid-template-columns: 1fr 1fr;
           gap: 40px;
           padding: 40px;
+      }
+
+      @media (max-width: 768px) {
+          .main-content {
+              grid-template-columns: 1fr;
+              gap: 20px;
+              padding: 20px;
+          }
       }
 
       .input-section {
@@ -167,6 +184,24 @@
 
       .salary-input-container input {
           flex: 1;
+      }
+
+      @media (max-width: 480px) {
+          .salary-input-container {
+              flex-direction: column;
+              align-items: flex-start;
+              gap: 10px;
+          }
+          
+          .salary-input-container input {
+              flex: none;
+              width: 100%;
+          }
+          
+          .salary-input-container .currency-toggle {
+              align-self: flex-start;
+              width: auto;
+          }
       }
 
       .currency-toggle {
@@ -316,12 +351,123 @@
           font-size: 0.9em;
           color: #666;
       }
+
+      /* Additional responsive styles */
+      @media (max-width: 768px) {
+          .header h1 {
+              font-size: 2em;
+              flex-direction: column;
+              gap: 5px;
+          }
+          
+          .header h1 img {
+              width: 32px;
+              height: 32px;
+          }
+          
+          .header p {
+              font-size: 1em;
+          }
+          
+          .header {
+              padding: 20px;
+          }
+          
+          .input-section, .results-section {
+              padding: 20px;
+          }
+          
+          .toggle-group {
+              flex-direction: column;
+              gap: 10px;
+          }
+          
+          .toggle-group .toggle-btn {
+              flex: none;
+          }
+      }
+
+      @media (max-width: 480px) {
+          body {
+              padding: 10px;
+          }
+          
+          .container {
+              margin: 0;
+          }
+          
+          .bracket-item {
+              grid-template-columns: 1fr;
+              gap: 5px;
+              text-align: left;
+          }
+          
+          .bracket-item label {
+              font-size: 0.8em;
+          }
+          
+          .breakdown-currency-toggle {
+              flex-direction: column;
+              gap: 10px;
+              text-align: center;
+          }
+      }
+
+      /* Footer styles */
+      .footer {
+          background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+          color: white;
+          padding: 30px;
+          text-align: center;
+          margin-top: 0;
+      }
+
+      .footer-content {
+          max-width: 800px;
+          margin: 0 auto;
+          line-height: 1.6;
+      }
+
+      .footer p {
+          margin-bottom: 10px;
+          opacity: 0.9;
+      }
+
+      .footer a {
+          color: #f093fb;
+          text-decoration: none;
+          font-weight: 500;
+          transition: color 0.3s ease;
+      }
+
+      .footer a:hover {
+          color: white;
+          text-decoration: underline;
+      }
+
+      .footer .love {
+          color: #ff6b6b;
+          font-size: 1.1em;
+      }
+
+      @media (max-width: 768px) {
+          .footer {
+              padding: 20px;
+          }
+          
+          .footer p {
+              font-size: 0.9em;
+          }
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <div class="header">
-        <h1>🇪🇬 Egyptian Salary Calculator</h1>
+        <h1>
+          <img src="icons/favicon-96x96.png" alt="Calculator Icon">
+          Egyptian Income Tax Calculator
+        </h1>
         <p>
           Calculate your net salary with Egyptian tax rates and social insurance
         </p>
@@ -385,6 +531,12 @@
 
           <div class="tax-config-section" id="taxConfigSection" style="display: none;">
             <h3 class="config-title">Tax System Configuration</h3>
+            
+            <div class="input-group">
+              <button class="toggle-btn" id="resetConfigBtn" style="background: #f5576c; border-color: #f5576c; color: white;">
+                🔄 Reset to Defaults
+              </button>
+            </div>
             
             <div class="input-group">
               <label for="personalExemption">Personal Exemption (EGP)</label>
@@ -587,6 +739,14 @@
           </div>
         </div>
       </div>
+      
+      <div class="footer">
+        <div class="footer-content">
+          <p>Made with <span class="love">❤️</span> for the Egyptian workforce</p>
+          <p>© 2025 Egyptian Income Tax Calculator • <a href="https://github.com/cousine/egypt-income-tax-calculator" target="_blank" rel="noopener">View Source Code</a></p>
+          <p>Developed with assistance from <a href="https://opencode.ai" target="_blank" rel="noopener">opencode</a></p>
+        </div>
+      </div>
     </div>
 
     <script>
@@ -596,6 +756,130 @@
       let breakdownCurrency = 'EGP';
       let calculationMode = 'grossToNet'; // 'grossToNet' or 'netToGross'
       let exchangeRate = 50;
+
+      // Default tax configuration
+      const DEFAULT_CONFIG = {
+          personalExemption: 20000,
+          socialInsuranceRate: 14,
+          socialInsuranceCap: 78000,
+          bracket1: 40000,
+          bracket2: 55000,
+          bracket3: 70000,
+          bracket4: 200000,
+          bracket5: 400000,
+          bracket6: 1200000,
+          rate1: 0,
+          rate2: 10,
+          rate3: 15,
+          rate4: 20,
+          rate5: 22.5,
+          rate6: 25,
+          rate7: 27.5,
+          exchangeRate: 50
+      };
+
+      // LocalStorage functions
+      function saveConfigToStorage() {
+          const config = {
+              personalExemption: parseFloat(document.getElementById('personalExemption').value) || DEFAULT_CONFIG.personalExemption,
+              socialInsuranceRate: parseFloat(document.getElementById('socialInsuranceRate').value) || DEFAULT_CONFIG.socialInsuranceRate,
+              socialInsuranceCap: parseFloat(document.getElementById('socialInsuranceCap').value) || DEFAULT_CONFIG.socialInsuranceCap,
+              bracket1: parseFloat(document.getElementById('bracket1').value) || DEFAULT_CONFIG.bracket1,
+              bracket2: parseFloat(document.getElementById('bracket2').value) || DEFAULT_CONFIG.bracket2,
+              bracket3: parseFloat(document.getElementById('bracket3').value) || DEFAULT_CONFIG.bracket3,
+              bracket4: parseFloat(document.getElementById('bracket4').value) || DEFAULT_CONFIG.bracket4,
+              bracket5: parseFloat(document.getElementById('bracket5').value) || DEFAULT_CONFIG.bracket5,
+              bracket6: parseFloat(document.getElementById('bracket6').value) || DEFAULT_CONFIG.bracket6,
+              rate1: parseFloat(document.getElementById('rate1').value) || DEFAULT_CONFIG.rate1,
+              rate2: parseFloat(document.getElementById('rate2').value) || DEFAULT_CONFIG.rate2,
+              rate3: parseFloat(document.getElementById('rate3').value) || DEFAULT_CONFIG.rate3,
+              rate4: parseFloat(document.getElementById('rate4').value) || DEFAULT_CONFIG.rate4,
+              rate5: parseFloat(document.getElementById('rate5').value) || DEFAULT_CONFIG.rate5,
+              rate6: parseFloat(document.getElementById('rate6').value) || DEFAULT_CONFIG.rate6,
+              rate7: parseFloat(document.getElementById('rate7').value) || DEFAULT_CONFIG.rate7,
+              exchangeRate: parseFloat(document.getElementById('exchangeRateInput').value) || DEFAULT_CONFIG.exchangeRate
+          };
+          
+          try {
+              localStorage.setItem('egyTaxCalcConfig', JSON.stringify(config));
+              console.log('Configuration saved to localStorage');
+          } catch (error) {
+              console.error('Failed to save configuration:', error);
+          }
+      }
+
+      function loadConfigFromStorage() {
+          try {
+              const savedConfig = localStorage.getItem('egyTaxCalcConfig');
+              if (savedConfig) {
+                  const config = JSON.parse(savedConfig);
+                  
+                  // Apply saved configuration to form inputs
+                  document.getElementById('personalExemption').value = config.personalExemption || DEFAULT_CONFIG.personalExemption;
+                  document.getElementById('socialInsuranceRate').value = config.socialInsuranceRate || DEFAULT_CONFIG.socialInsuranceRate;
+                  document.getElementById('socialInsuranceCap').value = config.socialInsuranceCap || DEFAULT_CONFIG.socialInsuranceCap;
+                  document.getElementById('bracket1').value = config.bracket1 || DEFAULT_CONFIG.bracket1;
+                  document.getElementById('bracket2').value = config.bracket2 || DEFAULT_CONFIG.bracket2;
+                  document.getElementById('bracket3').value = config.bracket3 || DEFAULT_CONFIG.bracket3;
+                  document.getElementById('bracket4').value = config.bracket4 || DEFAULT_CONFIG.bracket4;
+                  document.getElementById('bracket5').value = config.bracket5 || DEFAULT_CONFIG.bracket5;
+                  document.getElementById('bracket6').value = config.bracket6 || DEFAULT_CONFIG.bracket6;
+                  document.getElementById('rate1').value = config.rate1 || DEFAULT_CONFIG.rate1;
+                  document.getElementById('rate2').value = config.rate2 || DEFAULT_CONFIG.rate2;
+                  document.getElementById('rate3').value = config.rate3 || DEFAULT_CONFIG.rate3;
+                  document.getElementById('rate4').value = config.rate4 || DEFAULT_CONFIG.rate4;
+                  document.getElementById('rate5').value = config.rate5 || DEFAULT_CONFIG.rate5;
+                  document.getElementById('rate6').value = config.rate6 || DEFAULT_CONFIG.rate6;
+                  document.getElementById('rate7').value = config.rate7 || DEFAULT_CONFIG.rate7;
+                  document.getElementById('exchangeRateInput').value = config.exchangeRate || DEFAULT_CONFIG.exchangeRate;
+                  
+                  // Update global exchange rate variable
+                  exchangeRate = config.exchangeRate || DEFAULT_CONFIG.exchangeRate;
+                  
+                  console.log('Configuration loaded from localStorage');
+                  return true;
+              }
+          } catch (error) {
+              console.error('Failed to load configuration:', error);
+          }
+          return false;
+      }
+
+      function resetConfigToDefaults() {
+          // Reset all inputs to default values
+          document.getElementById('personalExemption').value = DEFAULT_CONFIG.personalExemption;
+          document.getElementById('socialInsuranceRate').value = DEFAULT_CONFIG.socialInsuranceRate;
+          document.getElementById('socialInsuranceCap').value = DEFAULT_CONFIG.socialInsuranceCap;
+          document.getElementById('bracket1').value = DEFAULT_CONFIG.bracket1;
+          document.getElementById('bracket2').value = DEFAULT_CONFIG.bracket2;
+          document.getElementById('bracket3').value = DEFAULT_CONFIG.bracket3;
+          document.getElementById('bracket4').value = DEFAULT_CONFIG.bracket4;
+          document.getElementById('bracket5').value = DEFAULT_CONFIG.bracket5;
+          document.getElementById('bracket6').value = DEFAULT_CONFIG.bracket6;
+          document.getElementById('rate1').value = DEFAULT_CONFIG.rate1;
+          document.getElementById('rate2').value = DEFAULT_CONFIG.rate2;
+          document.getElementById('rate3').value = DEFAULT_CONFIG.rate3;
+          document.getElementById('rate4').value = DEFAULT_CONFIG.rate4;
+          document.getElementById('rate5').value = DEFAULT_CONFIG.rate5;
+          document.getElementById('rate6').value = DEFAULT_CONFIG.rate6;
+          document.getElementById('rate7').value = DEFAULT_CONFIG.rate7;
+          document.getElementById('exchangeRateInput').value = DEFAULT_CONFIG.exchangeRate;
+          
+          // Update global exchange rate variable
+          exchangeRate = DEFAULT_CONFIG.exchangeRate;
+          
+          // Save defaults to localStorage
+          saveConfigToStorage();
+          
+          // Update exchange rate display
+          document.getElementById('exchangeRate').textContent = `Exchange rate: 1 USD = ${exchangeRate.toFixed(2)} EGP`;
+          updateCurrencyInfo();
+          
+          // Recalculate with new values
+          calculateSalary();
+          
+          console.log('Configuration reset to defaults');
+      }
 
       // Tax configuration functions
       function getTaxConfig() {
@@ -919,8 +1203,13 @@
        }
       // Event listeners
       document.addEventListener('DOMContentLoaded', function() {
-          // Fetch exchange rate
-          fetchExchangeRate();
+          // Load saved configuration from localStorage
+          const configLoaded = loadConfigFromStorage();
+          
+          // Fetch exchange rate (only if no saved config exists)
+          if (!configLoaded) {
+              fetchExchangeRate();
+          }
 
           // Period toggle
           monthlyBtn.addEventListener('click', function() {
@@ -998,8 +1287,14 @@
 
           socialInsuranceSelect.addEventListener('change', calculateSalary);
 
-          exchangeRateInput.addEventListener('input', updateExchangeRate);
-          exchangeRateInput.addEventListener('change', updateExchangeRate);
+          exchangeRateInput.addEventListener('input', function() {
+              updateExchangeRate();
+              saveConfigToStorage(); // Auto-save exchange rate
+          });
+          exchangeRateInput.addEventListener('change', function() {
+              updateExchangeRate();
+              saveConfigToStorage(); // Auto-save exchange rate
+          });
 
           // Tax configuration toggle
           const taxConfigToggle = document.getElementById('taxConfigToggle');
@@ -1015,6 +1310,14 @@
               }
           });
 
+          // Reset configuration button
+          const resetConfigBtn = document.getElementById('resetConfigBtn');
+          resetConfigBtn.addEventListener('click', function() {
+              if (confirm('Are you sure you want to reset all tax configuration to defaults? This will overwrite your current settings.')) {
+                  resetConfigToDefaults();
+              }
+          });
+
           // Tax configuration inputs
           const taxInputs = [
               'personalExemption', 'socialInsuranceRate', 'socialInsuranceCap',
@@ -1025,17 +1328,25 @@
           taxInputs.forEach(inputId => {
               const input = document.getElementById(inputId);
               if (input) {
-                  input.addEventListener('input', calculateSalary);
-                  input.addEventListener('change', calculateSalary);
+                  input.addEventListener('input', function() {
+                      calculateSalary();
+                      saveConfigToStorage(); // Auto-save on change
+                  });
+                  input.addEventListener('change', function() {
+                      calculateSalary();
+                      saveConfigToStorage(); // Auto-save on change
+                  });
               }
           });
+
+
 
           // Initial calculation
           calculateSalary();
       });
 
       // PWA Service Worker Registration
-      if ('serviceWorker' in navigator) {
+      if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
           window.addEventListener('load', () => {
               navigator.serviceWorker.register('/sw.js')
                   .then(registration => {

@@ -3,6 +3,12 @@ const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
+  '/icons/favicon.ico',
+  '/icons/favicon.svg',
+  '/icons/favicon-96x96.png',
+  '/icons/apple-touch-icon.png',
+  '/icons/web-app-manifest-192x192.png',
+  '/icons/web-app-manifest-512x512.png',
   'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap',
   'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2',
   'https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmEU9fBBc4AMP6lQ.woff2',
@@ -126,8 +132,8 @@ self.addEventListener('sync', event => {
 self.addEventListener('push', event => {
   const options = {
     body: event.data ? event.data.text() : 'Egyptian tax rates have been updated!',
-    icon: '/icons/icon-192.png',
-    badge: '/icons/icon-72.png',
+    icon: '/icons/web-app-manifest-192x192.png',
+    badge: '/icons/favicon-96x96.png',
     vibrate: [100, 50, 100],
     data: {
       dateOfArrival: Date.now(),
@@ -137,18 +143,18 @@ self.addEventListener('push', event => {
       {
         action: 'explore',
         title: 'Open Calculator',
-        icon: '/icons/icon-192.png'
+        icon: '/icons/web-app-manifest-192x192.png'
       },
       {
         action: 'close',
         title: 'Close',
-        icon: '/icons/icon-192.png'
+        icon: '/icons/web-app-manifest-192x192.png'
       }
     ]
   };
 
   event.waitUntil(
-    self.registration.showNotification('Egyptian Salary Calculator', options)
+    self.registration.showNotification('Egyptian Income Tax Calculator', options)
   );
 });
 
