@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Egyptian Salary Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      body {
+          font-family: 'Roboto', sans-serif;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          min-height: 100vh;
+          padding: 20px;
+      }
+
+      .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          background: rgba(255, 255, 255, 0.95);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+      }
+
+      .header {
+          background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+          color: white;
+          padding: 30px;
+          text-align: center;
+      }
+
+      .header h1 {
+          font-size: 2.5em;
+          margin-bottom: 10px;
+          font-weight: 700;
+      }
+
+      .header p {
+          font-size: 1.1em;
+          opacity: 0.9;
+      }
+
+      .main-content {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 40px;
+          padding: 40px;
+      }
+
+      .input-section {
+          background: white;
+          padding: 30px;
+          border-radius: 15px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+          border: 2px solid #f0f0f0;
+      }
+
+      .results-section {
+          background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+          color: white;
+          padding: 30px;
+          border-radius: 15px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .section-title {
+          font-size: 1.5em;
+          margin-bottom: 25px;
+          font-weight: 600;
+          color: #333;
+      }
+
+      .results-section .section-title {
+          color: white;
+      }
+
+      .input-group {
+          margin-bottom: 25px;
+      }
+
+      label {
+          display: block;
+          margin-bottom: 8px;
+          font-weight: 500;
+          color: #555;
+      }
+
+      input[type="number"], select {
+          width: 100%;
+          padding: 12px 15px;
+          border: 2px solid #e0e0e0;
+          border-radius: 10px;
+          font-size: 16px;
+          transition: all 0.3s ease;
+          background: white;
+      }
+
+      input[type="number"]:focus, select:focus {
+          outline: none;
+          border-color: #667eea;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .toggle-group {
+          display: flex;
+          gap: 15px;
+          margin-bottom: 25px;
+      }
+
+      .toggle-btn {
+          flex: 1;
+          padding: 12px 20px;
+          border: 2px solid #667eea;
+          background: white;
+          color: #667eea;
+          border-radius: 10px;
+          cursor: pointer;
+          font-weight: 500;
+          transition: all 0.3s ease;
+      }
+
+      .toggle-btn.active {
+          background: #667eea;
+          color: white;
+      }
+
+      .toggle-btn:hover {
+          background: #667eea;
+          color: white;
+      }
+
+      .salary-input-container {
+          position: relative;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+      }
+
+      .salary-input-container input {
+          flex: 1;
+      }
+
+      .currency-toggle {
+          display: flex;
+          border: 2px solid #e0e0e0;
+          border-radius: 8px;
+          overflow: hidden;
+      }
+
+      .currency-btn {
+          padding: 8px 16px;
+          border: none;
+          background: white;
+          color: #666;
+          cursor: pointer;
+          font-weight: 500;
+          transition: all 0.3s ease;
+          font-size: 14px;
+      }
+
+      .currency-btn.active {
+          background: #667eea;
+          color: white;
+      }
+
+      .currency-btn:hover {
+          background: #f0f0f0;
+      }
+
+      .currency-btn.active:hover {
+          background: #667eea;
+      }
+
+      .breakdown-currency-toggle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 15px;
+          margin-bottom: 25px;
+          padding: 15px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 10px;
+      }
+
+      .percentage {
+          font-size: 0.85em;
+          opacity: 0.8;
+          font-weight: normal;
+      }
+
+      .breakdown-currency-label {
+          font-weight: 600;
+          color: white;
+      }
+
+      .result-item {
+          background: rgba(255, 255, 255, 0.1);
+          padding: 15px;
+          border-radius: 10px;
+          margin-bottom: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+
+      .result-label {
+          font-weight: 500;
+      }
+
+      .result-value {
+          font-weight: 700;
+          font-size: 1.1em;
+      }
+
+      .breakdown {
+          margin-top: 25px;
+      }
+
+      .breakdown-title {
+          font-size: 1.3em;
+          margin-bottom: 20px;
+          font-weight: 600;
+      }
+
+      .breakdown-item {
+          display: flex;
+          justify-content: space-between;
+          padding: 10px 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .currency-info {
+          font-size: 0.9em;
+          color: #666;
+          margin-top: 5px;
+      }
+
+      .breakdown-item:last-child {
+          border-bottom: none;
+      }
+
+      .tax-config-section {
+          background: #f8f9fa;
+          padding: 20px;
+          border-radius: 10px;
+          margin-top: 15px;
+          border: 1px solid #e0e0e0;
+      }
+
+      .config-title {
+          font-size: 1.2em;
+          margin-bottom: 20px;
+          color: #333;
+          font-weight: 600;
+      }
+
+      .tax-brackets h4 {
+          margin-bottom: 15px;
+          color: #555;
+          font-weight: 500;
+      }
+
+      .bracket-item {
+          display: grid;
+          grid-template-columns: auto 1fr auto 80px auto;
+          gap: 10px;
+          align-items: center;
+          margin-bottom: 10px;
+          padding: 10px;
+          background: white;
+          border-radius: 5px;
+          border: 1px solid #e0e0e0;
+      }
+
+      .bracket-item label {
+          margin-bottom: 0;
+          font-size: 0.9em;
+          white-space: nowrap;
+      }
+
+      .bracket-item input {
+          padding: 8px 10px;
+          font-size: 14px;
+      }
+
+      .bracket-item span {
+          font-size: 0.9em;
+          color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🇪🇬 Egyptian Salary Calculator</h1>
+        <p>
+          Calculate your net salary with Egyptian tax rates and social insurance
+        </p>
+      </div>
+
+      <div class="main-content">
+        <div class="input-section">
+          <h2 class="section-title">💰 Salary Information</h2>
+
+          <div class="toggle-group">
+            <button class="toggle-btn active" id="monthlyBtn">Monthly</button>
+            <button class="toggle-btn" id="annualBtn">Annual</button>
+          </div>
+
+          <div class="toggle-group">
+            <button class="toggle-btn active" id="grossToNetBtn">
+              Gross → Net
+            </button>
+            <button class="toggle-btn" id="netToGrossBtn">Net → Gross</button>
+          </div>
+
+          <div class="input-group">
+            <label for="salaryInput" id="salaryLabel">Gross Salary</label>
+            <div class="salary-input-container">
+              <input
+                type="number"
+                id="salaryInput"
+                placeholder="Enter salary"
+              />
+              <div class="currency-toggle">
+                <button class="currency-btn active" id="egpBtn">EGP</button>
+                <button class="currency-btn" id="usdBtn">USD</button>
+              </div>
+            </div>
+            <div class="currency-info" id="currencyInfo"></div>
+          </div>
+
+          <div class="input-group">
+            <label for="socialInsurance">Social Insurance Eligible</label>
+            <select id="socialInsurance">
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="exchangeRateInput">Exchange Rate (1 USD = ? EGP)</label>
+            <input
+              type="number"
+              id="exchangeRateInput"
+              min="1"
+              step="0.01"
+              value="50"
+              placeholder="Enter exchange rate"
+            />
+          </div>
+
+          <div class="input-group">
+            <button class="toggle-btn" id="taxConfigToggle">⚙️ Tax Configuration</button>
+          </div>
+
+          <div class="tax-config-section" id="taxConfigSection" style="display: none;">
+            <h3 class="config-title">Tax System Configuration</h3>
+            
+            <div class="input-group">
+              <label for="personalExemption">Personal Exemption (EGP)</label>
+              <input type="number" id="personalExemption" value="20000" min="0" step="1000" />
+            </div>
+
+            <div class="input-group">
+              <label for="socialInsuranceRate">Social Insurance Rate (%)</label>
+              <input type="number" id="socialInsuranceRate" value="14" min="0" max="100" step="0.1" />
+            </div>
+
+            <div class="input-group">
+              <label for="socialInsuranceCap">Social Insurance Cap (EGP)</label>
+              <input type="number" id="socialInsuranceCap" value="78000" min="0" step="1000" />
+            </div>
+
+            <div class="tax-brackets">
+              <h4>Tax Brackets</h4>
+              <div class="bracket-item">
+                <label>From EGP 0 to</label>
+                <input type="number" id="bracket1" value="40000" min="0" step="1000" />
+                <label>Rate:</label>
+                <input type="number" id="rate1" value="0" min="0" max="100" step="0.1" />
+                <span>%</span>
+              </div>
+              <div class="bracket-item">
+                <label>From previous to</label>
+                <input type="number" id="bracket2" value="55000" min="0" step="1000" />
+                <label>Rate:</label>
+                <input type="number" id="rate2" value="10" min="0" max="100" step="0.1" />
+                <span>%</span>
+              </div>
+              <div class="bracket-item">
+                <label>From previous to</label>
+                <input type="number" id="bracket3" value="70000" min="0" step="1000" />
+                <label>Rate:</label>
+                <input type="number" id="rate3" value="15" min="0" max="100" step="0.1" />
+                <span>%</span>
+              </div>
+              <div class="bracket-item">
+                <label>From previous to</label>
+                <input type="number" id="bracket4" value="200000" min="0" step="1000" />
+                <label>Rate:</label>
+                <input type="number" id="rate4" value="20" min="0" max="100" step="0.1" />
+                <span>%</span>
+              </div>
+              <div class="bracket-item">
+                <label>From previous to</label>
+                <input type="number" id="bracket5" value="400000" min="0" step="1000" />
+                <label>Rate:</label>
+                <input type="number" id="rate5" value="22.5" min="0" max="100" step="0.1" />
+                <span>%</span>
+              </div>
+              <div class="bracket-item">
+                <label>From previous to</label>
+                <input type="number" id="bracket6" value="1200000" min="0" step="1000" />
+                <label>Rate:</label>
+                <input type="number" id="rate6" value="25" min="0" max="100" step="0.1" />
+                <span>%</span>
+              </div>
+              <div class="bracket-item">
+                <label>Above previous</label>
+                <label>Rate:</label>
+                <input type="number" id="rate7" value="27.5" min="0" max="100" step="0.1" />
+                <span>%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="results-section">
+          <h2 class="section-title">📊 Salary Breakdown</h2>
+
+          <div class="breakdown-currency-toggle">
+            <span class="breakdown-currency-label">Display in:</span>
+            <div class="currency-toggle">
+              <button class="currency-btn active" id="breakdownEgpBtn">
+                EGP
+              </button>
+              <button class="currency-btn" id="breakdownUsdBtn">USD</button>
+            </div>
+          </div>
+
+          <div class="result-item">
+            <span class="result-label">Gross Salary</span>
+            <span class="result-value" id="displayGross">EGP 0</span>
+          </div>
+
+          <div class="result-item">
+            <span class="result-label">Net Salary</span>
+            <span class="result-value" id="displayNet">EGP 0</span>
+          </div>
+
+          <div class="breakdown">
+            <div class="breakdown-title">📅 Monthly Breakdown</div>
+            <div class="breakdown-item">
+              <span>Gross Salary</span>
+              <span id="monthlyGross">EGP 0</span>
+            </div>
+            <div class="breakdown-item">
+              <span
+                >Income Tax
+                <span class="percentage" id="monthlyIncomeTaxPct"
+                  >(0%)</span
+                ></span
+              >
+              <span id="monthlyIncomeTax">EGP 0</span>
+            </div>
+            <div class="breakdown-item">
+              <span
+                >Social Insurance
+                <span class="percentage" id="monthlySocialInsurancePct"
+                  >(0%)</span
+                ></span
+              >
+              <span id="monthlySocialInsurance">EGP 0</span>
+            </div>
+            <div class="breakdown-item">
+              <span
+                >Total Deductions
+                <span class="percentage" id="monthlyTotalDeductionsPct"
+                  >(0%)</span
+                ></span
+              >
+              <span id="monthlyTotalDeductions">EGP 0</span>
+            </div>
+            <div
+              class="breakdown-item"
+              style="
+                border-top: 2px solid rgba(255, 255, 255, 0.3);
+                margin-top: 10px;
+                padding-top: 15px;
+              "
+            >
+              <span
+                ><strong
+                  >Net Salary
+                  <span class="percentage" id="monthlyNetPct"
+                    >(0%)</span
+                  ></strong
+                ></span
+              >
+              <span id="monthlyNet"><strong>EGP 0</strong></span>
+            </div>
+          </div>
+
+          <div class="breakdown">
+            <div class="breakdown-title">📆 Annual Breakdown</div>
+            <div class="breakdown-item">
+              <span>Gross Salary</span>
+              <span id="annualGross">EGP 0</span>
+            </div>
+            <div class="breakdown-item">
+              <span
+                >Income Tax
+                <span class="percentage" id="annualIncomeTaxPct"
+                  >(0%)</span
+                ></span
+              >
+              <span id="annualIncomeTax">EGP 0</span>
+            </div>
+            <div class="breakdown-item">
+              <span
+                >Social Insurance
+                <span class="percentage" id="annualSocialInsurancePct"
+                  >(0%)</span
+                ></span
+              >
+              <span id="annualSocialInsurance">EGP 0</span>
+            </div>
+            <div class="breakdown-item">
+              <span
+                >Total Deductions
+                <span class="percentage" id="annualTotalDeductionsPct"
+                  >(0%)</span
+                ></span
+              >
+              <span id="annualTotalDeductions">EGP 0</span>
+            </div>
+            <div
+              class="breakdown-item"
+              style="
+                border-top: 2px solid rgba(255, 255, 255, 0.3);
+                margin-top: 10px;
+                padding-top: 15px;
+              "
+            >
+              <span
+                ><strong
+                  >Net Salary
+                  <span class="percentage" id="annualNetPct">(0%)</span></strong
+                ></span
+              >
+              <span id="annualNet"><strong>EGP 0</strong></span>
+            </div>
+          </div>
+
+          <div class="exchange-rate" id="exchangeRate">
+            Exchange rate: 1 USD = 50 EGP
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Global variables
+      let currentPeriod = 'monthly';
+      let currentCurrency = 'EGP';
+      let breakdownCurrency = 'EGP';
+      let calculationMode = 'grossToNet'; // 'grossToNet' or 'netToGross'
+      let exchangeRate = 50;
+
+      // Tax configuration functions
+      function getTaxConfig() {
+          return {
+              personalExemption: parseFloat(document.getElementById('personalExemption').value) || 20000,
+              socialInsuranceRate: (parseFloat(document.getElementById('socialInsuranceRate').value) || 14) / 100,
+              socialInsuranceCap: parseFloat(document.getElementById('socialInsuranceCap').value) || 78000,
+              brackets: [
+                  { limit: parseFloat(document.getElementById('bracket1').value) || 40000, rate: (parseFloat(document.getElementById('rate1').value) || 0) / 100 },
+                  { limit: parseFloat(document.getElementById('bracket2').value) || 55000, rate: (parseFloat(document.getElementById('rate2').value) || 10) / 100 },
+                  { limit: parseFloat(document.getElementById('bracket3').value) || 70000, rate: (parseFloat(document.getElementById('rate3').value) || 15) / 100 },
+                  { limit: parseFloat(document.getElementById('bracket4').value) || 200000, rate: (parseFloat(document.getElementById('rate4').value) || 20) / 100 },
+                  { limit: parseFloat(document.getElementById('bracket5').value) || 400000, rate: (parseFloat(document.getElementById('rate5').value) || 22.5) / 100 },
+                  { limit: parseFloat(document.getElementById('bracket6').value) || 1200000, rate: (parseFloat(document.getElementById('rate6').value) || 25) / 100 },
+                  { limit: Infinity, rate: (parseFloat(document.getElementById('rate7').value) || 27.5) / 100 }
+              ]
+          };
+      }
+
+      // DOM elements
+      const salaryInput = document.getElementById('salaryInput');
+      const salaryLabel = document.getElementById('salaryLabel');
+      const socialInsuranceSelect = document.getElementById('socialInsurance');
+      const exchangeRateInput = document.getElementById('exchangeRateInput');
+      const currencyInfo = document.getElementById('currencyInfo');
+      const monthlyBtn = document.getElementById('monthlyBtn');
+      const annualBtn = document.getElementById('annualBtn');
+      const grossToNetBtn = document.getElementById('grossToNetBtn');
+      const netToGrossBtn = document.getElementById('netToGrossBtn');
+      const egpBtn = document.getElementById('egpBtn');
+      const usdBtn = document.getElementById('usdBtn');
+      const breakdownEgpBtn = document.getElementById('breakdownEgpBtn');
+      const breakdownUsdBtn = document.getElementById('breakdownUsdBtn');
+
+      // Fetch exchange rate and update input
+      async function fetchExchangeRate() {
+          try {
+              const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+              const data = await response.json();
+              if (data.rates && data.rates.EGP) {
+                  exchangeRate = data.rates.EGP;
+                  exchangeRateInput.value = exchangeRate.toFixed(2);
+                  document.getElementById('exchangeRate').textContent = `Exchange rate: 1 USD = ${exchangeRate.toFixed(2)} EGP`;
+                  updateCurrencyInfo();
+              }
+          } catch (error) {
+              console.log('Using default exchange rate');
+          }
+      }
+
+      // Update exchange rate from input
+      function updateExchangeRate() {
+          const newRate = parseFloat(exchangeRateInput.value);
+          if (newRate && newRate > 0) {
+              exchangeRate = newRate;
+              document.getElementById('exchangeRate').textContent = `Exchange rate: 1 USD = ${exchangeRate.toFixed(2)} EGP`;
+              updateCurrencyInfo();
+              calculateSalary();
+          }
+      }
+
+      // Update currency info display
+      function updateCurrencyInfo() {
+          const salaryValue = parseFloat(salaryInput.value) || 0;
+
+          if (salaryValue > 0) {
+              if (currentCurrency === 'USD') {
+                  const egpValue = salaryValue * exchangeRate;
+                  currencyInfo.textContent = `≈ ${egpValue.toLocaleString('en-US', {maximumFractionDigits: 0})} EGP`;
+              } else {
+                  const usdValue = salaryValue / exchangeRate;
+                  currencyInfo.textContent = `≈ ${usdValue.toLocaleString('en-US', {maximumFractionDigits: 0})} USD`;
+              }
+          } else {
+              currencyInfo.textContent = '';
+          }
+      }
+
+      // Calculate gross salary from net salary using iterative approach
+      function calculateGrossFromNet(targetNet, socialInsuranceEligible, period) {
+          let lowGuess = targetNet;
+          let highGuess = targetNet * 2;
+          let tolerance = 1;
+          let maxIterations = 100;
+
+          for (let i = 0; i < maxIterations; i++) {
+              let midGuess = (lowGuess + highGuess) / 2;
+              let calculatedNet = calculateNetFromGross(midGuess, socialInsuranceEligible, period);
+
+              if (Math.abs(calculatedNet - targetNet) < tolerance) {
+                  return midGuess;
+              }
+
+              if (calculatedNet < targetNet) {
+                  lowGuess = midGuess;
+              } else {
+                  highGuess = midGuess;
+              }
+          }
+
+          return (lowGuess + highGuess) / 2;
+      }
+
+      // Helper function to calculate income tax using configurable brackets
+      function calculateIncomeTax(taxableIncome, taxConfig) {
+          let tax = 0;
+          let previousLimit = 0;
+
+          for (let i = 0; i < taxConfig.brackets.length; i++) {
+              const bracket = taxConfig.brackets[i];
+              const bracketLimit = bracket.limit;
+              
+              if (taxableIncome > previousLimit) {
+                  const taxableInThisBracket = Math.min(taxableIncome, bracketLimit) - previousLimit;
+                  tax += taxableInThisBracket * bracket.rate;
+                  
+                  if (taxableIncome <= bracketLimit) {
+                      break;
+                  }
+              }
+              
+              previousLimit = bracketLimit;
+          }
+
+          return tax;
+      }
+
+      // Helper function to calculate net from gross
+      function calculateNetFromGross(grossSalary, socialInsuranceEligible, period) {
+          const taxConfig = getTaxConfig();
+          const annualGross = period === 'monthly' ? grossSalary * 12 : grossSalary;
+
+          // Calculate social insurance
+          let socialInsuranceDeduction = 0;
+          if (socialInsuranceEligible) {
+              const insurableAmount = Math.min(annualGross, taxConfig.socialInsuranceCap);
+              socialInsuranceDeduction = insurableAmount * taxConfig.socialInsuranceRate;
+          }
+
+          // Calculate income tax
+          const taxableIncome = Math.max(0, annualGross - taxConfig.personalExemption);
+          const incomeTax = calculateIncomeTax(taxableIncome, taxConfig);
+
+          const totalDeductions = incomeTax + socialInsuranceDeduction;
+          const annualNet = annualGross - totalDeductions;
+
+          return period === 'monthly' ? annualNet / 12 : annualNet;
+      }
+
+      // Calculate salary
+      function calculateSalary() {
+          const salaryInputValue = parseFloat(salaryInput.value) || 0;
+          const socialInsuranceEligible = socialInsuranceSelect.value === 'yes';
+
+          if (salaryInputValue <= 0) {
+              resetDisplay();
+              return;
+          }
+
+          let grossSalary, netSalary;
+
+          // Convert input to EGP if entered in USD
+          let inputSalaryInEGP = salaryInputValue;
+          if (currentCurrency === 'USD') {
+              inputSalaryInEGP = salaryInputValue * exchangeRate;
+          }
+
+          if (calculationMode === 'grossToNet') {
+              // Standard gross to net calculation
+              grossSalary = inputSalaryInEGP;
+              netSalary = calculateNetFromGross(grossSalary, socialInsuranceEligible, currentPeriod);
+          } else {
+              // Reverse calculation: net to gross
+              const targetNet = inputSalaryInEGP;
+              grossSalary = calculateGrossFromNet(targetNet, socialInsuranceEligible, currentPeriod);
+              netSalary = targetNet;
+          }
+
+          // Get current tax configuration
+          const taxConfig = getTaxConfig();
+          
+          // Convert to annual for detailed calculations
+          const annualGross = currentPeriod === 'monthly' ? grossSalary * 12 : grossSalary;
+
+          // Calculate social insurance using configurable rate and cap
+          let socialInsuranceDeduction = 0;
+          if (socialInsuranceEligible) {
+              const insurableAmount = Math.min(annualGross, taxConfig.socialInsuranceCap);
+              socialInsuranceDeduction = insurableAmount * taxConfig.socialInsuranceRate;
+          }
+
+          // Calculate income tax using configurable brackets
+          const taxableIncome = Math.max(0, annualGross - taxConfig.personalExemption);
+          const incomeTax = calculateIncomeTax(taxableIncome, taxConfig);
+
+          // Calculate net salary
+          const totalDeductions = incomeTax + socialInsuranceDeduction;
+          const annualNet = annualGross - totalDeductions;
+
+          // Calculate monthly values
+          const monthlyGrossValue = annualGross / 12;
+          const monthlyIncomeTaxValue = incomeTax / 12;
+          const monthlySocialInsuranceValue = socialInsuranceDeduction / 12;
+          const monthlyTotalDeductionsValue = totalDeductions / 12;
+          const monthlyNetValue = annualNet / 12;
+
+          // Calculate percentages
+          const monthlyIncomeTaxPct = monthlyGrossValue > 0 ? (monthlyIncomeTaxValue / monthlyGrossValue) * 100 : 0;
+          const monthlySocialInsurancePct = monthlyGrossValue > 0 ? (monthlySocialInsuranceValue / monthlyGrossValue) * 100 : 0;
+          const monthlyTotalDeductionsPct = monthlyGrossValue > 0 ? (monthlyTotalDeductionsValue / monthlyGrossValue) * 100 : 0;
+          const monthlyNetPct = monthlyGrossValue > 0 ? (monthlyNetValue / monthlyGrossValue) * 100 : 0;
+
+          const annualIncomeTaxPct = annualGross > 0 ? (incomeTax / annualGross) * 100 : 0;
+          const annualSocialInsurancePct = annualGross > 0 ? (socialInsuranceDeduction / annualGross) * 100 : 0;
+          const annualTotalDeductionsPct = annualGross > 0 ? (totalDeductions / annualGross) * 100 : 0;
+          const annualNetPct = annualGross > 0 ? (annualNet / annualGross) * 100 : 0;
+
+          // Display values based on current period toggle for main display
+          let displayGross = currentPeriod === 'monthly' ? monthlyGrossValue : annualGross;
+          let displayNet = currentPeriod === 'monthly' ? monthlyNetValue : annualNet;
+
+          // Convert breakdown values based on breakdown currency toggle
+          let breakdownCurrencySymbol = 'EGP';
+          let monthlyGrossDisplay = monthlyGrossValue;
+          let monthlyIncomeTaxDisplay = monthlyIncomeTaxValue;
+          let monthlySocialInsuranceDisplay = monthlySocialInsuranceValue;
+          let monthlyTotalDeductionsDisplay = monthlyTotalDeductionsValue;
+          let monthlyNetDisplay = monthlyNetValue;
+          let annualGrossDisplay = annualGross;
+          let annualIncomeTaxDisplay = incomeTax;
+          let annualSocialInsuranceDisplay = socialInsuranceDeduction;
+          let annualTotalDeductionsDisplay = totalDeductions;
+          let annualNetDisplay = annualNet;
+
+          if (breakdownCurrency === 'USD') {
+              // Convert breakdown values to USD
+              monthlyGrossDisplay = monthlyGrossDisplay / exchangeRate;
+              monthlyIncomeTaxDisplay = monthlyIncomeTaxDisplay / exchangeRate;
+              monthlySocialInsuranceDisplay = monthlySocialInsuranceDisplay / exchangeRate;
+              monthlyTotalDeductionsDisplay = monthlyTotalDeductionsDisplay / exchangeRate;
+              monthlyNetDisplay = monthlyNetDisplay / exchangeRate;
+
+              annualGrossDisplay = annualGrossDisplay / exchangeRate;
+              annualIncomeTaxDisplay = annualIncomeTaxDisplay / exchangeRate;
+              annualSocialInsuranceDisplay = annualSocialInsuranceDisplay / exchangeRate;
+              annualTotalDeductionsDisplay = annualTotalDeductionsDisplay / exchangeRate;
+              annualNetDisplay = annualNetDisplay / exchangeRate;
+
+              breakdownCurrencySymbol = 'USD';
+          }
+
+           // Convert main display values based on breakdown currency
+           if (breakdownCurrency === 'USD') {
+               displayGross = displayGross / exchangeRate;
+               displayNet = displayNet / exchangeRate;
+           }
+
+           // Update main display (based on current period toggle)
+           document.getElementById('displayGross').textContent = `${breakdownCurrencySymbol} ${displayGross.toLocaleString('en-US', {maximumFractionDigits: 0})}`;
+           document.getElementById('displayNet').textContent = `${breakdownCurrencySymbol} ${displayNet.toLocaleString('en-US', {maximumFractionDigits: 0})}`;
+
+           // Update monthly breakdown
+           document.getElementById('monthlyGross').textContent = `${breakdownCurrencySymbol} ${monthlyGrossDisplay.toLocaleString('en-US', {maximumFractionDigits: 0})}`;
+           document.getElementById('monthlyIncomeTax').textContent = `${breakdownCurrencySymbol} ${monthlyIncomeTaxDisplay.toLocaleString('en-US', {maximumFractionDigits: 0})}`;
+           document.getElementById('monthlySocialInsurance').textContent = `${breakdownCurrencySymbol} ${monthlySocialInsuranceDisplay.toLocaleString('en-US', {maximumFractionDigits: 0})}`;
+           document.getElementById('monthlyTotalDeductions').textContent = `${breakdownCurrencySymbol} ${monthlyTotalDeductionsDisplay.toLocaleString('en-US', {maximumFractionDigits: 0})}`;
+           document.getElementById('monthlyNet').textContent = `${breakdownCurrencySymbol} ${monthlyNetDisplay.toLocaleString('en-US', {maximumFractionDigits: 0})}`;
+
+           // Update monthly percentages
+           document.getElementById('monthlyIncomeTaxPct').textContent = `(${monthlyIncomeTaxPct.toFixed(1)}%)`;
+           document.getElementById('monthlySocialInsurancePct').textContent = `(${monthlySocialInsurancePct.toFixed(1)}%)`;
+           document.getElementById('monthlyTotalDeductionsPct').textContent = `(${monthlyTotalDeductionsPct.toFixed(1)}%)`;
+           document.getElementById('monthlyNetPct').textContent = `(${monthlyNetPct.toFixed(1)}%)`;
+
+           // Update annual breakdown
+           document.getElementById('annualGross').textContent = `${breakdownCurrencySymbol} ${annualGrossDisplay.toLocaleString('en-US', {maximumFractionDigits: 0})}`;
+           document.getElementById('annualIncomeTax').textContent = `${breakdownCurrencySymbol} ${annualIncomeTaxDisplay.toLocaleString('en-US', {maximumFractionDigits: 0})}`;
+           document.getElementById('annualSocialInsurance').textContent = `${breakdownCurrencySymbol} ${annualSocialInsuranceDisplay.toLocaleString('en-US', {maximumFractionDigits: 0})}`;
+           document.getElementById('annualTotalDeductions').textContent = `${breakdownCurrencySymbol} ${annualTotalDeductionsDisplay.toLocaleString('en-US', {maximumFractionDigits: 0})}`;
+           document.getElementById('annualNet').textContent = `${breakdownCurrencySymbol} ${annualNetDisplay.toLocaleString('en-US', {maximumFractionDigits: 0})}`;
+
+           // Update annual percentages
+           document.getElementById('annualIncomeTaxPct').textContent = `(${annualIncomeTaxPct.toFixed(1)}%)`;
+           document.getElementById('annualSocialInsurancePct').textContent = `(${annualSocialInsurancePct.toFixed(1)}%)`;
+           document.getElementById('annualTotalDeductionsPct').textContent = `(${annualTotalDeductionsPct.toFixed(1)}%)`;
+           document.getElementById('annualNetPct').textContent = `(${annualNetPct.toFixed(1)}%)`;
+       }
+      // Reset display
+      function resetDisplay() {
+          const currency = breakdownCurrency;
+          document.getElementById('displayGross').textContent = `${currency} 0`;
+          document.getElementById('displayNet').textContent = `${currency} 0`;
+
+          // Reset monthly breakdown
+          document.getElementById('monthlyGross').textContent = `${currency} 0`;
+          document.getElementById('monthlyIncomeTax').textContent = `${currency} 0`;
+          document.getElementById('monthlySocialInsurance').textContent = `${currency} 0`;
+          document.getElementById('monthlyTotalDeductions').textContent = `${currency} 0`;
+          document.getElementById('monthlyNet').textContent = `${currency} 0`;
+
+          // Reset monthly percentages
+          document.getElementById('monthlyIncomeTaxPct').textContent = '(0%)';
+          document.getElementById('monthlySocialInsurancePct').textContent = '(0%)';
+          document.getElementById('monthlyTotalDeductionsPct').textContent = '(0%)';
+          document.getElementById('monthlyNetPct').textContent = '(0%)';
+
+          // Reset annual breakdown
+          document.getElementById('annualGross').textContent = `${currency} 0`;
+          document.getElementById('annualIncomeTax').textContent = `${currency} 0`;
+          document.getElementById('annualSocialInsurance').textContent = `${currency} 0`;
+          document.getElementById('annualTotalDeductions').textContent = `${currency} 0`;
+          document.getElementById('annualNet').textContent = `${currency} 0`;
+
+          // Reset annual percentages
+          document.getElementById('annualIncomeTaxPct').textContent = '(0%)';
+          document.getElementById('annualSocialInsurancePct').textContent = '(0%)';
+          document.getElementById('annualTotalDeductionsPct').textContent = '(0%)';
+          document.getElementById('annualNetPct').textContent = '(0%)';
+
+           currencyInfo.textContent = '';
+       }
+      // Event listeners
+      document.addEventListener('DOMContentLoaded', function() {
+          // Fetch exchange rate
+          fetchExchangeRate();
+
+          // Period toggle
+          monthlyBtn.addEventListener('click', function() {
+              currentPeriod = 'monthly';
+              monthlyBtn.classList.add('active');
+              annualBtn.classList.remove('active');
+              calculateSalary();
+          });
+
+          annualBtn.addEventListener('click', function() {
+              currentPeriod = 'annual';
+              annualBtn.classList.add('active');
+              monthlyBtn.classList.remove('active');
+              calculateSalary();
+          });
+
+          // Calculation mode toggle
+          grossToNetBtn.addEventListener('click', function() {
+              calculationMode = 'grossToNet';
+              grossToNetBtn.classList.add('active');
+              netToGrossBtn.classList.remove('active');
+              salaryLabel.textContent = 'Gross Salary';
+              salaryInput.placeholder = 'Enter gross salary';
+              calculateSalary();
+          });
+
+          netToGrossBtn.addEventListener('click', function() {
+              calculationMode = 'netToGross';
+              netToGrossBtn.classList.add('active');
+              grossToNetBtn.classList.remove('active');
+              salaryLabel.textContent = 'Net Salary';
+              salaryInput.placeholder = 'Enter desired net salary';
+              calculateSalary();
+          });
+
+          // Currency toggle
+          egpBtn.addEventListener('click', function() {
+              // Don't convert the input value, just change the currency
+              currentCurrency = 'EGP';
+              egpBtn.classList.add('active');
+              usdBtn.classList.remove('active');
+              updateCurrencyInfo();
+              calculateSalary();
+          });
+
+          usdBtn.addEventListener('click', function() {
+              // Don't convert the input value, just change the currency
+              currentCurrency = 'USD';
+              usdBtn.classList.add('active');
+              egpBtn.classList.remove('active');
+              updateCurrencyInfo();
+              calculateSalary();
+          });
+
+          // Breakdown currency toggle
+          breakdownEgpBtn.addEventListener('click', function() {
+              breakdownCurrency = 'EGP';
+              breakdownEgpBtn.classList.add('active');
+              breakdownUsdBtn.classList.remove('active');
+              calculateSalary();
+          });
+
+          breakdownUsdBtn.addEventListener('click', function() {
+              breakdownCurrency = 'USD';
+              breakdownUsdBtn.classList.add('active');
+              breakdownEgpBtn.classList.remove('active');
+              calculateSalary();
+          });
+
+          // Input events
+          salaryInput.addEventListener('input', function() {
+              updateCurrencyInfo();
+              calculateSalary();
+          });
+
+          socialInsuranceSelect.addEventListener('change', calculateSalary);
+
+          exchangeRateInput.addEventListener('input', updateExchangeRate);
+          exchangeRateInput.addEventListener('change', updateExchangeRate);
+
+          // Tax configuration toggle
+          const taxConfigToggle = document.getElementById('taxConfigToggle');
+          const taxConfigSection = document.getElementById('taxConfigSection');
+          
+          taxConfigToggle.addEventListener('click', function() {
+              if (taxConfigSection.style.display === 'none') {
+                  taxConfigSection.style.display = 'block';
+                  taxConfigToggle.textContent = '⚙️ Hide Tax Configuration';
+              } else {
+                  taxConfigSection.style.display = 'none';
+                  taxConfigToggle.textContent = '⚙️ Tax Configuration';
+              }
+          });
+
+          // Tax configuration inputs
+          const taxInputs = [
+              'personalExemption', 'socialInsuranceRate', 'socialInsuranceCap',
+              'bracket1', 'bracket2', 'bracket3', 'bracket4', 'bracket5', 'bracket6',
+              'rate1', 'rate2', 'rate3', 'rate4', 'rate5', 'rate6', 'rate7'
+          ];
+
+          taxInputs.forEach(inputId => {
+              const input = document.getElementById(inputId);
+              if (input) {
+                  input.addEventListener('input', calculateSalary);
+                  input.addEventListener('change', calculateSalary);
+              }
+          });
+
+          // Initial calculation
+          calculateSalary();
+      });
+    </script>
+  </body>
+</html>
+
