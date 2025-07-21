@@ -459,6 +459,110 @@
               font-size: 0.9em;
           }
       }
+
+      /* Install prompt styles */
+      .install-prompt {
+          position: fixed;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          padding: 15px 20px;
+          border-radius: 12px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          display: none;
+          align-items: center;
+          gap: 15px;
+          z-index: 1000;
+          max-width: 90vw;
+          animation: slideUp 0.3s ease-out;
+      }
+
+      .install-prompt.show {
+          display: flex;
+      }
+
+      .install-prompt-content {
+          flex: 1;
+      }
+
+      .install-prompt h3 {
+          margin: 0 0 5px 0;
+          font-size: 1.1em;
+          font-weight: 600;
+      }
+
+      .install-prompt p {
+          margin: 0;
+          font-size: 0.9em;
+          opacity: 0.9;
+      }
+
+      .install-prompt-buttons {
+          display: flex;
+          gap: 10px;
+      }
+
+      .install-btn, .dismiss-btn {
+          padding: 8px 16px;
+          border: none;
+          border-radius: 6px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-size: 0.9em;
+      }
+
+      .install-btn {
+          background: white;
+          color: #667eea;
+      }
+
+      .install-btn:hover {
+          background: #f0f0f0;
+          transform: translateY(-1px);
+      }
+
+      .dismiss-btn {
+          background: rgba(255, 255, 255, 0.2);
+          color: white;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .dismiss-btn:hover {
+          background: rgba(255, 255, 255, 0.3);
+      }
+
+      @keyframes slideUp {
+          from {
+              transform: translateX(-50%) translateY(100px);
+              opacity: 0;
+          }
+          to {
+              transform: translateX(-50%) translateY(0);
+              opacity: 1;
+          }
+      }
+
+      @media (max-width: 480px) {
+          .install-prompt {
+              bottom: 10px;
+              left: 10px;
+              right: 10px;
+              transform: none;
+              max-width: none;
+          }
+          
+          .install-prompt-buttons {
+              flex-direction: column;
+              gap: 8px;
+          }
+          
+          .install-btn, .dismiss-btn {
+              width: 100%;
+          }
+      }
     </style>
   </head>
   <body>
@@ -746,6 +850,18 @@
           <p>© 2025 Egyptian Income Tax Calculator • <a href="https://github.com/cousine/egypt-income-tax-calculator" target="_blank" rel="noopener">View Source Code</a></p>
           <p>Developed with assistance from <a href="https://opencode.ai" target="_blank" rel="noopener">opencode</a></p>
         </div>
+      </div>
+    </div>
+
+    <!-- PWA Install Prompt -->
+    <div class="install-prompt" id="installPrompt">
+      <div class="install-prompt-content">
+        <h3>📱 Install App</h3>
+        <p>Add to your home screen for quick access and offline use!</p>
+      </div>
+      <div class="install-prompt-buttons">
+        <button class="install-btn" id="installBtn">Install</button>
+        <button class="dismiss-btn" id="dismissBtn">Later</button>
       </div>
     </div>
 
@@ -1373,20 +1489,85 @@
 
       // PWA Install Prompt
       let deferredPrompt;
+      let installPromptDismissed = localStorage.getItem('installPromptDismissed');
+
       window.addEventListener('beforeinstallprompt', (e) => {
-          // Prevent Chrome 67 and earlier from automatically showing the prompt
+          // Prevent Chrome from automatically showing the prompt
           e.preventDefault();
           // Stash the event so it can be triggered later
           deferredPrompt = e;
           
-          // Show install button (you can add a button to trigger this)
-          console.log('PWA install prompt available');
+          // Show custom install prompt if not dismissed
+          if (!installPromptDismissed) {
+              showInstallPrompt();
+          }
       });
+
+      function showInstallPrompt() {
+          const installPrompt = document.getElementById('installPrompt');
+          const installBtn = document.getElementById('installBtn');
+          const dismissBtn = document.getElementById('dismissBtn');
+
+          // Show the prompt after a short delay
+          setTimeout(() => {
+              installPrompt.classList.add('show');
+          }, 3000); // Show after 3 seconds
+
+          // Install button click
+          installBtn.addEventListener('click', async () => {
+              if (deferredPrompt) {
+                  // Show the install prompt
+                  deferredPrompt.prompt();
+                  
+                  // Wait for the user to respond to the prompt
+                  const { outcome } = await deferredPrompt.userChoice;
+                  
+                  if (outcome === 'accepted') {
+                      console.log('User accepted the install prompt');
+                  } else {
+                      console.log('User dismissed the install prompt');
+                  }
+                  
+                  // Clear the deferredPrompt
+                  deferredPrompt = null;
+              }
+              
+              // Hide the custom prompt
+              hideInstallPrompt();
+          });
+
+          // Dismiss button click
+          dismissBtn.addEventListener('click', () => {
+              hideInstallPrompt();
+              // Remember that user dismissed the prompt
+              localStorage.setItem('installPromptDismissed', 'true');
+          });
+      }
+
+      function hideInstallPrompt() {
+          const installPrompt = document.getElementById('installPrompt');
+          installPrompt.classList.remove('show');
+      }
 
       // Handle successful installation
       window.addEventListener('appinstalled', (evt) => {
           console.log('PWA was installed successfully');
+          hideInstallPrompt();
+          
+          // Clear the dismissed flag since app is now installed
+          localStorage.removeItem('installPromptDismissed');
+          
+          // Show a success message (optional)
+          setTimeout(() => {
+              alert('🎉 App installed successfully! You can now access it from your home screen.');
+          }, 1000);
       });
+
+      // Check if app is already installed (running in standalone mode)
+      if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+          // App is already installed, don't show install prompt
+          console.log('App is running in standalone mode');
+      }
     </script>
   </body>
 </html>
